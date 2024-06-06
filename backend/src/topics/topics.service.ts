@@ -10,10 +10,17 @@ export class TopicsService {
     private readonly topicModel: Model<Topic>,
   ) { }
 
-
   create(body: Omit<Topic, 'id' | 'createdAt' | 'updatedAt'>) {
     // some validation
     return this.topicModel.create(body);
+  }
+
+  update(topic: Topic, data: Partial<Topic>) {
+    return this.topicModel.findByIdAndUpdate(
+      topic.id,
+      data,
+      { new: true },
+    );
   }
 
   findAll() {
