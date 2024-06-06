@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TopicsModule } from './topics/topics.module';
 import { CategoriesModule } from './categories/categories.module';
+import { EntriesModule } from './entries/entries.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CategoriesModule } from './categories/categories.module';
     UsersModule,
     TopicsModule,
     CategoriesModule,
+    EntriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
