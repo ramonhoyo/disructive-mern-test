@@ -23,4 +23,28 @@ describe('UsersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should return an array of users', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should create a user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should return a user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should update a user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should throw an error if username already exist', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should throw an error if email already exist', async () => {
+    throw new Error('Test not implemented');
+  });
 });
