@@ -16,6 +16,14 @@ export class UsersService {
     return this.userModel.find();
   }
 
+  findOne(id: string) {
+    return this.userModel.findById(id);
+  }
+
+  findOneByEmailOrUsername(email: string, username: string) {
+    return this.userModel.findOne({ $or: [{ email }, { username }] });
+  }
+
   create(body: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) {
     return this.userModel.create(body);
   }
