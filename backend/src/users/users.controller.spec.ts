@@ -26,4 +26,32 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should return status 200 and an array of users', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should return status 201 and a user created', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should return status 200 and the user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should return status 404 when user is not found', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should return status 400 and when username, email are not provider for create a new user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should update a user', async () => {
+    throw new Error('Test not implemented');
+  });
+
+  it('should throw 409 an error if username or email already exist', async () => {
+    throw new Error('Test not implemented');
+  });
 });
