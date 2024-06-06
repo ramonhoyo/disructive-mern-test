@@ -15,7 +15,7 @@ export class TopicsController {
   }
 
   @Post()
-  // TODO: add validation pipe
+  // TODO: add validation pipe for file upload
   create(@Body() body: CreateTopicDto) {
     return this.topicsService.create({
       title: body.title,
