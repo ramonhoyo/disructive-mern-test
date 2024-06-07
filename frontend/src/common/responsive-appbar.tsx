@@ -125,7 +125,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <MuiLink component={Link} href={page.toLowerCase()} textAlign="center">{page}</MuiLink>
                 </MenuItem>
               ))}
             </Menu>
