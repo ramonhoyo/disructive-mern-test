@@ -6,6 +6,7 @@ import { updateToken } from '@/src/helpers/axios-instance';
 import { redirect } from 'next/navigation';
 import { Button, Card, Container, Grid, TextField, Typography, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -33,6 +34,14 @@ export default function LoginPage() {
       <Container component={Card} maxWidth='xs'>
         <form onSubmit={handleOnSubmit}>
           <Grid container spacing={2} padding={2}>
+            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+              <Image alt="logo" width={100} height={80} src="http://127.0.0.1:3000/topics/covers/426fb6b2a6ac209c8ca0218f3ab39a81.png" />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="h5">Wellcome to this test</Typography>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 fullWidth

@@ -7,10 +7,13 @@ import CategoryFormDialog from "../categories/category-form.dialog";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../categories/categories.api";
+import TopicsTable from "../topics/topics.table";
+import TopicFormDialog from "../topics/topic-form.dialog";
 
 export default function AdminPage() {
   const queryClient = useQueryClient();
   const [categoryFormOpen, setCategoryFormOpen] = useState(false);
+  const [topicFormOpen, setTopicFormOpen] = useState(false);
 
   const createCategoryMutation = useMutation({
     mutationFn: createCategory,
@@ -21,6 +24,10 @@ export default function AdminPage() {
 
   const handleOnNewCategoryClick = () => {
     setCategoryFormOpen(true);
+  };
+
+  const handleOnNewTopicClick = () => {
+    setTopicFormOpen(true);
   };
 
   useEffect(() => {
@@ -45,9 +52,26 @@ export default function AdminPage() {
         <Grid item xs={12}>
           <CategoriesTable />
         </Grid>
+
+
+        <Grid item container>
+          <Grid item xs>
+            <Typography variant="h5">Topics</Typography>
+          </Grid>
+
+          <Grid>
+            <Button variant="contained" onClick={handleOnNewTopicClick}>New</Button>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TopicsTable />
+        </Grid>
+
       </Grid>
 
       <CategoryFormDialog open={categoryFormOpen} setOpen={setCategoryFormOpen} />
+      <TopicFormDialog open={topicFormOpen} setOpen={setTopicFormOpen} />
     </main>
   );
 }

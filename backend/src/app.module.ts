@@ -8,6 +8,7 @@ import { TopicsModule } from './topics/topics.module';
 import { CategoriesModule } from './categories/categories.module';
 import { EntriesModule } from './entries/entries.module';
 import { AuthModule } from './auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -21,7 +22,6 @@ import { AuthModule } from './auth/auth.module';
         uri: configService.get('MONGO_URI'),
       }),
     }),
-    UsersModule,
     TopicsModule,
     CategoriesModule,
     EntriesModule,
