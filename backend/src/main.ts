@@ -8,8 +8,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new MongoExceptionFilter())
+  app.enableCors();
 
   Logger.log(`Server running on http://localhost:${port}`, 'Bootstrap');
   await app.listen(port);
 }
+
 bootstrap();
