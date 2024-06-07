@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import ResponsiveAppBar from "@/src/common/responsive-appbar";
 import TopicsCards from "../topics/topics.cards";
 
-export default function EntriesPage() {
+export default function HomePage() {
   return (
     <main>
       <ResponsiveAppBar />

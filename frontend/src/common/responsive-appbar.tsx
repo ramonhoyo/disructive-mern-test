@@ -21,6 +21,13 @@ import Link from 'next/link';
 
 const settings = ['Profile', 'Logout'];
 
+
+const PagesDefinitions = [
+  { name: 'Home', href: '/' },
+  { name: 'My Posts', href: '/entries' },
+  { name: 'Admin', href: '/admin' },
+];
+
 function ResponsiveAppBar() {
   const queryCient = useQueryClient();
   const { data: user } = useUser();
@@ -31,11 +38,11 @@ function ResponsiveAppBar() {
     }
 
     if (user.type === 'Admin') {
-      return ['Admin', 'My Posts'];
+      return PagesDefinitions;
     }
 
     if (user.type === 'Creator') {
-      return ['My Posts'];
+      return PagesDefinitions.filter((page) => page.name !== 'Admin');
     }
 
     return [];
@@ -124,8 +131,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <MuiLink component={Link} href={page.toLowerCase()} textAlign="center">{page}</MuiLink>
+                <MenuItem key={page.href} onClick={handleCloseNavMenu}>
+                  <MuiLink component={Link} href={page.href} textAlign="center">{page.name}</MuiLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -153,12 +160,12 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <MuiLink
                 component={Link}
-                href={page.toLowerCase()}
-                key={page}
+                href={page.href}
+                key={page.href}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block', mx: 1, }}
               >
-                {page}
+                {page.name}
               </MuiLink>
             ))}
           </Box>

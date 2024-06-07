@@ -3,7 +3,6 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getCategories } from './categories.api';
-import { Typography } from '@mui/material';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Title', width: 150 },
