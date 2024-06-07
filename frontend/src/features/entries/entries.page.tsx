@@ -28,9 +28,8 @@ export default function EntriesPage() {
   return (
     <main>
       <ResponsiveAppBar />
-      <Container>
-        <h1>Entries</h1>
-        <p>Welcome {user?.username}</p>
+
+      <Container sx={{ mt: 4 }}>
         <TopicsCards />
       </Container>
     </main>

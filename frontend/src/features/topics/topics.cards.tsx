@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTopics } from "./topics.api";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Card } from "@mui/material";
 import Image from "next/image";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL + '/topics/covers'
@@ -12,9 +12,9 @@ export default function TopicsCards() {
   });
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2}>
       {topics?.map(it => (
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid component={Card} sx={{ m: 1 }} item xs={12} sm={3} md={4}>
           <Image
             width={200}
             height={100}

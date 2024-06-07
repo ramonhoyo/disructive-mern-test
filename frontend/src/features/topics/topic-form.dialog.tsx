@@ -67,11 +67,11 @@ export default function CategoryFormDialog(props: FormDialogProps) {
           },
         }}
       >
-        <DialogTitle>Create a new Category</DialogTitle>
+        <DialogTitle>Create a new Topic</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Categories can help identify some posts based on its category,
-            e.g. images, txt files, youtube video urls, etc.
+            Topics can help identify some posts based on its topic,
+            e.g. sports, music, news, etc.
           </DialogContentText>
           <TextField
             autoFocus
@@ -81,7 +81,7 @@ export default function CategoryFormDialog(props: FormDialogProps) {
             name="name"
             value={name}
             onChange={e => setName(e.target.value)}
-            label="Category name"
+            label="Topic title"
             type="text"
             fullWidth
             variant="standard"
