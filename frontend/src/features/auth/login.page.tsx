@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { login } from './auth.api';
 import { updateToken } from '@/src/helpers/axios-instance';
 import { redirect } from 'next/navigation';
-import { Button, Card, Container, Grid, TextField, } from '@mui/material';
+import { Button, Card, Container, Grid, TextField, Typography, Link as MuiLink } from '@mui/material';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -44,6 +45,10 @@ export default function LoginPage() {
 
             <Grid item xs>
               <Button fullWidth type="submit" variant='contained'>Login</Button>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography>Do not have an account? <MuiLink component={Link} href="register">Join us!</MuiLink></Typography>
             </Grid>
           </Grid>
         </form>
