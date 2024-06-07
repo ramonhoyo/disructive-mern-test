@@ -42,13 +42,12 @@ export class TopicsController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 2000000 }),
-          new FileTypeValidator({ fileType: 'image/png' }),
+          // regex for image/png and image/jpeg
+          new FileTypeValidator({ fileType: /(jpeg|jpg|png)$/ })
         ],
       }),
     ) file: Express.Multer.File
   ) {
-    console.log(file);
-
     const ext = file.originalname.split('.')[1];
     if (!ext) {
       throw new BadRequestException('Invalid file type');
