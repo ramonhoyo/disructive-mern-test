@@ -4,6 +4,13 @@ import { UserTypes } from "../users.types";
 
 @Schema({
   timestamps: true,
+  toJSON: {
+    transform: function(doc, ret) {
+      ret.id = ret._id;
+      delete ret.__v;
+      delete ret._id; 1
+    },
+  }
 })
 export class User {
   id: string;
