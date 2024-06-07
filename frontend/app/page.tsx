@@ -1,12 +1,11 @@
-import styles from "./page.module.css";
-import EntriesPage from "@/src/features/entries/entries.page";
 import ProtectedRoute from "@/src/features/auth/protected-route";
+import HomePage from "@/src/features/home/home.page";
 
 export default function Home() {
   return (
     <main>
       <ProtectedRoute>
-        <EntriesPage />
+        <HomePage />
       </ProtectedRoute>
     </main>
   );

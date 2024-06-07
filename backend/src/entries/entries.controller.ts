@@ -17,6 +17,15 @@ export class EntriesController {
     return this.entriesService.findAll();
   }
 
+  @Get('mine')
+  async getMyEntries(@Request() req: any) {
+    const result = await this.entriesService.findAll({
+      createdBy: req.user,
+    });
+
+    return result;
+  }
+
   @Get(':id')
   findEntryById(@Param('id') id: string) {
     return this.entriesService.findOne(id);
@@ -41,6 +50,4 @@ export class EntriesController {
       createdBy: req.user,
     });
   }
-
-
 }

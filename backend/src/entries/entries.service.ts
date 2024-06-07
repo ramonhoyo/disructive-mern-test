@@ -14,8 +14,8 @@ export class EntriesService {
     return this.entryModel.create(body);
   }
 
-  findAll() {
-    return this.entryModel.find();
+  findAll(filter?: Partial<Entry>) {
+    return this.entryModel.find(filter);
   }
 
   findOne(id: string) {
