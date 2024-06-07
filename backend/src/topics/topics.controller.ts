@@ -18,7 +18,7 @@ export class TopicsController {
   }
 
   @Post()
-  @Roles(UserTypes.Creator, UserTypes.Admin)
+  @Roles(UserTypes.Admin)
   create(@Body() body: CreateTopicDto) {
     return this.topicsService.create({
       title: body.title,

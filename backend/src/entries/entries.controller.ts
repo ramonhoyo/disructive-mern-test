@@ -1,8 +1,9 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { TopicsService } from 'src/topics/topics.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UserTypes } from 'src/users/users.types';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('entries')
 export class EntriesController {
@@ -21,9 +22,11 @@ export class EntriesController {
     return this.entriesService.findOne(id);
   }
 
+  @Roles(UserTypes.Creator)
   @Post()
   async create(
-    @Body() body: CreateEntryDto
+    @Request() req: any,
+    @Body() body: CreateEntryDto,
   ) {
     const topic = await this.topicsService.findById(body.topicId);
     if (!topic) {
@@ -35,14 +38,7 @@ export class EntriesController {
       topic,
       url: body.url || '',
       content: body.content || '',
-      createdBy: {
-        id: 'fake-user-id',
-        username: 'fake-user',
-        email: 'fake@email.com',
-        type: UserTypes.Creator,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
+      createdBy: req.user,
     });
   }
 
