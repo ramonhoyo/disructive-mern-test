@@ -9,15 +9,15 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import MuiLink from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Image from 'next/image'
 import { removeUserFromLocalStorage, useUser } from '../features/users/hooks/use-user';
-import { redirect } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { removeToken } from '../helpers/axios-instance';
+import Link from 'next/link';
 
 const settings = ['Profile', 'Logout'];
 
@@ -151,13 +151,15 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
+              <MuiLink
+                component={Link}
+                href={page.toLowerCase()}
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block', mx: 1, }}
               >
                 {page}
-              </Button>
+              </MuiLink>
             ))}
           </Box>
 

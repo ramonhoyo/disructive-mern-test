@@ -73,7 +73,7 @@ export default function RegistrationPage() {
                   id="demo-simple-select"
                   value={role}
                   label="role"
-                  onChange={e => setRole(e.target.value)}
+                  onChange={e => setRole(e.target.value as "Reader" | "Creator")}
                 >
                   <MenuItem value="Reader">Reader</MenuItem>
                   <MenuItem value="Creator">Creator</MenuItem>
