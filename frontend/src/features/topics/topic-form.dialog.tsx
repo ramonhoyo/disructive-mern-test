@@ -21,7 +21,7 @@ export default function CategoryFormDialog(props: FormDialogProps) {
   const queryClient = useQueryClient();
   const { open, setOpen } = props;
   const [name, setName] = useState('');
-  const [cover, setCover] = useState<File | null>(null);
+  const [cover, setCover] = useState<any>('');
 
   const mutation = useMutation({
     mutationFn: createTopic,
@@ -32,10 +32,16 @@ export default function CategoryFormDialog(props: FormDialogProps) {
 
   const handleClose = () => {
     setOpen(false);
+    setCover('');
   };
 
   const handleOnFileChange = (e: any) => {
-    setCover(e.target.value);
+    console.log(e.target.files);
+    let file = null;
+    if (e.target.files[0]) {
+      file = e.target.files[0];
+    }
+    setCover(file);
   };
 
   React.useEffect(() => {
@@ -56,7 +62,7 @@ export default function CategoryFormDialog(props: FormDialogProps) {
             event.preventDefault();
             mutation.mutate({
               title: name,
-              cover: cover!,
+              cover,
             });
           },
         }}
@@ -86,7 +92,6 @@ export default function CategoryFormDialog(props: FormDialogProps) {
             margin="dense"
             id="cover"
             name="cover"
-            value={cover}
             label="Cover"
             onChange={handleOnFileChange}
             type="file"

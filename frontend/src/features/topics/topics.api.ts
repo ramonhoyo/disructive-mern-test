@@ -3,7 +3,7 @@ import { Topic } from "./topics.interfaces";
 
 export interface CreateTopicDto {
   title: string;
-  cover: File;
+  cover: string;
 }
 
 export const getTopics = async (): Promise<Topic[]> => {

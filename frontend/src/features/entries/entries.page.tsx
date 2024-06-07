@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Container } from "@mui/material";
 import { getTopics } from "../topics/topics.api";
 import ResponsiveAppBar from "@/src/common/responsive-appbar";
+import TopicsCards from "../topics/topics.cards";
 
 export default function EntriesPage() {
   const { data: user } = useUser();
@@ -30,9 +31,7 @@ export default function EntriesPage() {
       <Container>
         <h1>Entries</h1>
         <p>Welcome {user?.username}</p>
-        {topics?.map((topic) => (
-          <div key={topic.title}>{topic.title}</div>
-        ))}
+        <TopicsCards />
       </Container>
     </main>
   );

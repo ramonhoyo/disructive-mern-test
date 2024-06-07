@@ -1,4 +1,4 @@
 export interface Topic {
   title: string;
-  cover: string;
+  img: string;
 }
