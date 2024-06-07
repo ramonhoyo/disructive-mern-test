@@ -4,12 +4,10 @@ import ProtectedRoute from "@/src/features/auth/protected-route";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.grid}>
-        <ProtectedRoute>
-          <EntriesPage />
-        </ProtectedRoute>
-      </div>
+    <main>
+      <ProtectedRoute>
+        <EntriesPage />
+      </ProtectedRoute>
     </main>
   );
 }
