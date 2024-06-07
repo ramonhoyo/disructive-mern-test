@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { login } from './auth.api';
 import { updateToken } from '@/src/helpers/axios-instance';
 import { redirect } from 'next/navigation';
+import { Button, Card, Container, Grid, TextField, } from '@mui/material';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -28,16 +29,25 @@ export default function LoginPage() {
 
   return (
     <main>
-      <h1>Login from</h1>
-      <form onSubmit={handleOnSubmit}>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <button type="submit">submit</button>
-      </form>
+      <Container component={Card} maxWidth='xs'>
+        <form onSubmit={handleOnSubmit}>
+          <Grid container spacing={2} padding={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                name="username"
+                label='Username or Email'
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs>
+              <Button fullWidth type="submit" variant='contained'>Login</Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Container>
     </main>
   );
 }
