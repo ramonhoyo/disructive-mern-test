@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Entry } from './schema/entry.schema';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { FilterQuery, Model } from 'mongoose';
 
 @Injectable()
 export class EntriesService {
@@ -14,7 +14,7 @@ export class EntriesService {
     return this.entryModel.create(body);
   }
 
-  findAll(filter?: Partial<Entry>) {
+  findAll(filter?: FilterQuery<Entry>) {
     return this.entryModel.find(filter);
   }
 

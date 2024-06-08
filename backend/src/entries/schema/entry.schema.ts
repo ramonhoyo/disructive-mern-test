@@ -39,7 +39,7 @@ export class Entry {
 
   @Prop({
     type: mongoose.Types.ObjectId,
-    ref: "User",
+    ref: User.name,
     required: true,
     unique: false,
   })

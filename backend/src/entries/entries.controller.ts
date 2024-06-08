@@ -4,6 +4,7 @@ import { TopicsService } from 'src/topics/topics.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UserTypes } from 'src/users/users.types';
 import { Roles } from 'src/auth/roles.decorator';
+import mongoose from 'mongoose';
 
 @Controller('entries')
 export class EntriesController {
@@ -20,7 +21,7 @@ export class EntriesController {
   @Get('mine')
   async getMyEntries(@Request() req: any) {
     const result = await this.entriesService.findAll({
-      createdBy: req.user,
+      createdBy: req.user._id,
     });
 
     return result;
