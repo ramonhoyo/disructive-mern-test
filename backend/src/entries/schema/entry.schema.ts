@@ -9,12 +9,18 @@ import { User } from "src/users/schemas/user.schema";
     transform: function(doc, ret) {
       ret.id = ret._id;
       delete ret.__v;
-      delete ret._id; 1
+      delete ret._id;
+      ret.createdBy = {
+        username: ret.createdBy.username,
+      };
     },
   }
 })
 export class Entry {
   id: string;
+
+  @Prop({ unique: true })
+  title: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Topic" })
   topic: Topic;
@@ -31,7 +37,12 @@ export class Entry {
   @Prop()
   updatedAt: Date;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User", required: true })
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: true,
+    unique: false,
+  })
   createdBy: User;
 }
 

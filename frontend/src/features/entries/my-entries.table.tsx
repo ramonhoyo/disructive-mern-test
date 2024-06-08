@@ -14,6 +14,6 @@ export default function MyEntriesTable() {
   });
 
   return (
-    <DataGrid rows={entries || []} columns={columns} getRowId={it => it._id} />
+    <DataGrid rows={entries || []} columns={columns} getRowId={it => it.id} />
   );
 }

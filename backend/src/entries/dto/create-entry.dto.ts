@@ -4,6 +4,9 @@ export class CreateEntryDto {
   @IsString()
   topicId: string;
 
+  @IsString()
+  title: string;
+
   @IsUrl()
   @IsOptional()
   url?: string;

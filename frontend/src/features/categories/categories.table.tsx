@@ -16,6 +16,6 @@ export default function CategoriesTable() {
   });
 
   return (
-    <DataGrid rows={categories || []} columns={columns} getRowId={it => it._id} />
+    <DataGrid rows={categories || []} columns={columns} getRowId={it => it.id} />
   );
 }

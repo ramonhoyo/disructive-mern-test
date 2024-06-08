@@ -18,6 +18,7 @@ import { removeUserFromLocalStorage, useUser } from '../features/users/hooks/use
 import { useQueryClient } from '@tanstack/react-query';
 import { removeToken } from '../helpers/axios-instance';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const settings = ['Profile', 'Logout'];
 
@@ -29,6 +30,7 @@ const PagesDefinitions = [
 ];
 
 function ResponsiveAppBar() {
+  const router = useRouter();
   const queryCient = useQueryClient();
   const { data: user } = useUser();
 
@@ -70,7 +72,7 @@ function ResponsiveAppBar() {
         removeUserFromLocalStorage();
         removeToken();
         queryCient.invalidateQueries({ queryKey: ['user/me'] });
-        window.location.href = '/login';
+        router.push('/login');
         break;
       default:
         break;

@@ -16,6 +16,6 @@ export default function TopicsTable() {
   });
 
   return (
-    <DataGrid rows={topics || []} columns={columns} getRowId={it => it._id} />
+    <DataGrid rows={topics || []} columns={columns} getRowId={it => it.id} />
   );
 }

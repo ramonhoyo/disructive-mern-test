@@ -7,15 +7,25 @@ export const axiosInstance: AxiosInstance = axios.create({
 })
 
 export const updateToken = (token: string) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
   localStorage.setItem('token', token);
   axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
 }
 
 export const removeToken = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
   localStorage.removeItem('token');
 }
 
 export const getToken = () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   let token = localStorage.getItem('token');
   console.log('token', token);
   if (token) {

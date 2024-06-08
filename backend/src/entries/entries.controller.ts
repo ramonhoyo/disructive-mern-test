@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Logger, NotFoundException, Param, Post, Request } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { TopicsService } from 'src/topics/topics.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
