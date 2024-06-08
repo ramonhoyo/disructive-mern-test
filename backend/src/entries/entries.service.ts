@@ -15,7 +15,7 @@ export class EntriesService {
   }
 
   findAll(filter?: FilterQuery<Entry>) {
-    return this.entryModel.find(filter);
+    return this.entryModel.find(filter, null, { sort: { createdAt: -1 } });
   }
 
   findOne(id: string) {
