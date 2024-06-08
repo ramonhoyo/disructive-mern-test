@@ -12,7 +12,7 @@ export async function getEntries() {
   return data;
 }
 
-export async function getMyEntries(): Promise<Entry> {
+export async function getMyEntries(): Promise<Entry[]> {
   const { data } = await axiosInstance.get('/entries/mine');
   return data;
 }

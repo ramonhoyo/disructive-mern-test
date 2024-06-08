@@ -4,7 +4,7 @@ import { getMyEntries } from "./entries.api";
 
 const columns: GridColDef[] = [
   { field: 'title', headerName: 'Title', width: 150 },
-  { field: 'content', headerName: 'Content' },
+  { field: 'content', headerName: 'Content', width: 300 },
 ];
 
 export default function MyEntriesTable() {
