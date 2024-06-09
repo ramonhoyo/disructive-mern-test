@@ -1,15 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTopics } from "./topics.api";
 import { Grid, Typography, Card } from "@mui/material";
 import Image from "next/image";
+import useTopics from "./use-topics";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL + '/topics/covers'
 
 export default function TopicsCards() {
-  const { data: topics } = useQuery({
-    queryKey: ['topics'],
-    queryFn: getTopics,
-  });
+  const { data: topics } = useTopics();
 
   return (
     <Grid container spacing={2}>

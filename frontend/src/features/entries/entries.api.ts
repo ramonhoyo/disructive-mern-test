@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/src/helpers/axios-instance";
-import { Entry } from "./entries.types";
+import { Entry } from "./entries.interfaces";
 
 export interface CreateEntryDto {
   title: string;
@@ -7,7 +7,7 @@ export interface CreateEntryDto {
   topicId: string;
 }
 
-export async function getEntries() {
+export async function getEntries(): Promise<Entry[]> {
   const { data } = await axiosInstance.get('/entries');
   return data;
 }
