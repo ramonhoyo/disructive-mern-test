@@ -12,6 +12,11 @@ export async function getEntries(): Promise<Entry[]> {
   return data;
 }
 
+export async function getEntry(entryId: string): Promise<Entry> {
+  const { data } = await axiosInstance.get('/entries/' + entryId);
+  return data;
+}
+
 export async function getMyEntries(): Promise<Entry[]> {
   const { data } = await axiosInstance.get('/entries/mine');
   return data;
