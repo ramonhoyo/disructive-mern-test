@@ -17,4 +17,8 @@ export class CategoriesService {
   create(body: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>) {
     return this.categoryModel.create(body);
   }
+
+  findById(categoryId: string) {
+    return this.categoryModel.findById(categoryId);
+  }
 }

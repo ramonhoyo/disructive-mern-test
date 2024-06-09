@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
+import { Category } from "src/categories/schema/category.schema";
 
 @Schema({
   timestamps: true,
@@ -19,6 +20,10 @@ export class Topic {
 
   @Prop({ required: true })
   img: string;
+
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Category" })
+  category: Category;
 
   @Prop()
   createdAt: Date;

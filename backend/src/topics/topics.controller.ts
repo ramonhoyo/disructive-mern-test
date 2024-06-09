@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { createReadStream, existsSync, renameSync } from 'fs';
 import { join } from 'path';
 import { Public } from 'src/auth/public.decorator';
+import { CategoriesService } from 'src/categories/categories.service';
 
 @Controller('topics')
 @UseGuards(RolesGuard)
@@ -23,7 +24,8 @@ export class TopicsController {
   baseCoverPath: string;
   constructor(
     private readonly topicsService: TopicsService,
-    private readonly configService: ConfigService,
+    private readonly categoriesService: CategoriesService,
+    configService: ConfigService,
   ) {
     this.baseCoverPath = configService.get('MULTER_DEST') + "/covers"
   }
@@ -36,7 +38,7 @@ export class TopicsController {
   @Post()
   @Roles(UserTypes.Admin)
   @UseInterceptors(FileInterceptor('cover'))
-  create(
+  async create(
     @Body() body: CreateTopicDto,
     @UploadedFile(
       new ParseFilePipe({
@@ -56,8 +58,14 @@ export class TopicsController {
     const newPath = this.baseCoverPath + "/" + file.filename + "." + ext.toLowerCase();
     renameSync(file.path, newPath);
 
+    const category = await this.categoriesService.findById(body.categoryId);
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+
     return this.topicsService.create({
       title: body.title,
+      category,
       img: file.filename + "." + ext.toLowerCase(),
     });
   }

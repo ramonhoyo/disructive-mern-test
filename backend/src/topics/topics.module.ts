@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Topic, TopicSchema } from './schema/topic.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CategoriesModule } from 'src/categories/categories.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => ({
         dest: `${configService.get('MULTER_DEST')}/covers`,
       })
-    })
+    }),
+    CategoriesModule,
   ],
   providers: [TopicsService],
   controllers: [TopicsController],
