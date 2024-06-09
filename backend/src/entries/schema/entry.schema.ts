@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
 import { Topic } from "src/topics/schema/topic.schema";
 import { User } from "src/users/schemas/user.schema";
+import { EntryMedia, EntryMediaSchema } from "./entry-media.schema";
 
 @Schema({
   timestamps: true,
@@ -26,10 +27,10 @@ export class Entry {
   topic: Topic;
 
   @Prop()
-  url: string;
-
-  @Prop()
   content: string;
+
+  @Prop({ type: [EntryMediaSchema] })
+  media: EntryMedia[];
 
   @Prop()
   createdAt: Date;

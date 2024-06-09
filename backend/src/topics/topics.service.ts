@@ -30,6 +30,6 @@ export class TopicsService {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid id');
     }
-    return this.topicModel.findById(id);
+    return this.topicModel.findById(id).populate('category');
   }
 }

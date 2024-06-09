@@ -2,6 +2,8 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Entry } from './schema/entry.schema';
 import mongoose, { FilterQuery, Model } from 'mongoose';
+import { EntryMedia } from './schema/entry-media.schema';
+import { Topic } from 'src/topics/schema/topic.schema';
 
 @Injectable()
 export class EntriesService {
@@ -10,7 +12,31 @@ export class EntriesService {
     private readonly entryModel: Model<Entry>,
   ) { }
 
-  create(body: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'>) {
+  private validateUploadingMedia(media: EntryMedia[], topic: Topic) {
+    const { category } = topic;
+    const contentTypeList = new Set();
+    category.contentTypes.forEach(it => contentTypeList.add(it))
+
+    let errorMessage = '';
+
+    for (const item of media) {
+      if (!contentTypeList.has(item.type)) {
+        errorMessage = `Invalid content type (${item.type}) for category. expected = ${[...contentTypeList.values()]}`;
+        break;
+      }
+    }
+
+    if (errorMessage) {
+      // TODO: remove stored files;
+      throw new BadRequestException(errorMessage);
+    }
+  }
+
+  create(
+    body: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'>
+  ) {
+    Logger.log(body)
+    this.validateUploadingMedia(body.media, body.topic);
     return this.entryModel.create(body);
   }
 

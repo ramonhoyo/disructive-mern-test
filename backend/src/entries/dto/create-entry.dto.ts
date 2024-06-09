@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUrl } from "class-validator";
+import { IsArray, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class CreateEntryDto {
   @IsString()
@@ -7,9 +7,10 @@ export class CreateEntryDto {
   @IsString()
   title: string;
 
-  @IsUrl()
+  @IsArray()
+  @IsUrl({}, { each: true })
   @IsOptional()
-  url?: string;
+  urls?: string[];
 
   @IsString()
   @IsOptional()
