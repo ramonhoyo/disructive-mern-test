@@ -29,7 +29,7 @@ export default function CreateEntryPage() {
         }}
         validationSchema={CreateEntryFormSchema}
         onSubmit={(values, { setSubmitting }) => {
-          mutation.mutate(values, {
+          mutation.mutate(values as any, {
             onSuccess: () => {
               snackbar.enqueueSnackbar('Post created', { variant: 'success' });
               queryClient.invalidateQueries({ queryKey: ['entries/mine'] });
