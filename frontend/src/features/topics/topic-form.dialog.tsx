@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Alert, Box, CircularProgress, Grid, MenuItem } from '@mui/material';
+import { Alert, Grid, MenuItem } from '@mui/material';
 import { createTopic } from './topics.api';
 import { Field, Form, Formik } from 'formik';
 import { Select, TextField } from 'formik-mui';
@@ -60,7 +60,7 @@ export default function CategoryFormDialog(props: FormDialogProps) {
         });
       }}
     >
-      {({ submitForm, isSubmitting, values }) => (
+      {({ submitForm, isSubmitting }) => (
         <Form>
           <Dialog
             open={open}
@@ -71,8 +71,6 @@ export default function CategoryFormDialog(props: FormDialogProps) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <DialogContentText>
-
-                    {JSON.stringify(values.cover)}
                     Topics can help identify some posts based on its topic,
                     e.g. sports, music, news, etc.
                   </DialogContentText>
