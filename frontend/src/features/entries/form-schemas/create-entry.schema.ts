@@ -10,6 +10,12 @@ export const CreateEntryFormSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
+  urls: Yup
+    .array()
+    .of(Yup.string()
+      .url()
+      .required()
+    ),
   topicId: Yup.string().required('Required'),
   images: Yup.array().of(Yup.mixed()
     .test('fileFormat', 'Only JPEG,PNG are supported', (value: any) => {

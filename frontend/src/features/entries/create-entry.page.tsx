@@ -25,8 +25,8 @@ export default function CreateEntryPage() {
           title: '',
           content: '',
           topicId: '',
+          urls: [],
         }}
-        render={CreateEntryForm}
         validationSchema={CreateEntryFormSchema}
         onSubmit={(values, { setSubmitting }) => {
           mutation.mutate(values, {
@@ -44,7 +44,9 @@ export default function CreateEntryPage() {
             },
           });
         }}
-      />
+      >
+        {(props) => <CreateEntryForm {...props} />}
+      </Formik>
     </main>
   )
 }

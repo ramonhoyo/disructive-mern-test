@@ -1,12 +1,13 @@
 import MultilineTextField from '@/src/components/multiline-text-field';
-import { Button, Container, Grid, MenuItem, Typography } from '@mui/material';
-import { Field, Form, useFormikContext } from 'formik';
-import { Select, SimpleFileUpload, TextField } from 'formik-mui';
+import { Box, Button, Container, Grid, MenuItem, Paper, Typography } from '@mui/material';
+import { Field, Form } from 'formik';
+import { Select, TextField } from 'formik-mui';
 import useTopics from '../../topics/use-topics';
 import { useEffect, useMemo } from 'react';
 import { ContentType } from '../../categories/categories.interfaces';
 import FormikDropzoneArea from '@/src/components/formik/formik-dropzone-area';
 import { MaxFileSize } from '@/src/helpers/consts';
+import MultiUrlsTextField from '@/src/components/multi-urls-text-field';
 
 
 export default function CreateEntryForm({ submitForm, isSubmitting, values, errors }: any) {
@@ -88,7 +89,8 @@ export default function CreateEntryForm({ submitForm, isSubmitting, values, erro
           )}
 
           {contentTypes.image && (
-            <Grid item xs={12}>
+            <Grid item component={Paper} sx={{ p: 4, mt: 4 }} xs={12}>
+              <Typography variant="subtitle1">Images</Typography>
               <FormikDropzoneArea
                 name="images"
                 maxFileSize={MaxFileSize}
@@ -99,6 +101,14 @@ export default function CreateEntryForm({ submitForm, isSubmitting, values, erro
             </Grid>
           )}
 
+
+          {contentTypes.video && (
+            <Grid item component={Paper} sx={{ p: 4, mt: 4 }} xs={12}>
+              <Typography variant="h6">Include URLS for the videos </Typography>
+              <Typography variant="subtitle1" color="grey">only youtube videos are allowed</Typography>
+              <MultiUrlsTextField name="urls" domains={['youtube.com']} />
+            </Grid>
+          )}
 
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'end' }}>
             <Button
