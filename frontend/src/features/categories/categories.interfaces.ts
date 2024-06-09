@@ -9,7 +9,7 @@ export enum ContentType {
 export interface Category {
   id: string;
   name: string;
-  contentTypeS: ContentType[];
+  contentTypes: ContentType[];
   createdAt: string;
   createdBy: string;
 }

@@ -5,6 +5,8 @@ export interface CreateEntryDto {
   title: string;
   content: string;
   topicId: string;
+  images: File[];
+  texts: File[];
 }
 
 export async function getEntries(): Promise<Entry[]> {
@@ -23,6 +25,21 @@ export async function getMyEntries(): Promise<Entry[]> {
 }
 
 export async function createEntry(entry: CreateEntryDto) {
-  const { data } = await axiosInstance.post('/entries', entry);
+  const { images, texts, ...other } = entry;
+  const formData = new FormData();
+
+  Object.entries(other).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  images?.forEach((file, i) => {
+    formData.append(`image-${i}`, file);
+  });
+
+  texts?.forEach((file, i) => {
+    formData.append(`texts-${i}`, file);
+  });
+
+  const { data } = await axiosInstance.post('/entries', formData);
   return data;
 }
