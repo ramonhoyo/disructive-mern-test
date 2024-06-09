@@ -1,8 +1,9 @@
 
 export enum ContentType {
   Text = 'Text',
-  Videos = 'Videos',
-  Images = 'Images',
+  Video = 'Video',
+  Image = 'Image',
+  Txt = 'Txt',
 }
 
 export interface Category {
