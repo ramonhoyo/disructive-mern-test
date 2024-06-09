@@ -11,7 +11,6 @@ export class TopicsService {
   ) { }
 
   create(body: Omit<Topic, 'id' | 'createdAt' | 'updatedAt'>) {
-    // some validation
     return this.topicModel.create(body);
   }
 
@@ -24,7 +23,7 @@ export class TopicsService {
   }
 
   findAll() {
-    return this.topicModel.find();
+    return this.topicModel.find().populate('category');
   }
 
   findById(id: string) {
