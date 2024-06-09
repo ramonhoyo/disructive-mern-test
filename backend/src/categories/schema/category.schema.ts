@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
+import { ContentType } from "src/entries/entries.types";
 
 @Schema({
   timestamps: true,
@@ -16,6 +17,9 @@ export class Category {
 
   @Prop({ unique: true, required: true })
   name: string;
+
+  @Prop({ type: [String], enum: ContentType, required: true })
+  contentTypes: ContentType[];
 
   @Prop()
   createdAt: Date;

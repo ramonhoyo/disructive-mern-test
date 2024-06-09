@@ -6,6 +6,7 @@ import { getCategories } from './categories.api';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Title', width: 150 },
+  { field: 'contentTypes', headerName: 'Content Types', width: 150 },
   { field: 'createdAt', headerName: 'Created At', width: 150 },
 ];
 
