@@ -1,7 +1,7 @@
 "use client";
 
 import ResponsiveAppBar from "@/src/common/responsive-appbar";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import CategoriesTable from "../categories/categories.table";
 import CategoryFormDialog from "../categories/category-form.dialog";
 import { useEffect, useState } from "react";
@@ -35,43 +35,45 @@ export default function AdminPage() {
   }, [createCategoryMutation.isSuccess]);
 
   return (
-    <main>
+    <>
       <ResponsiveAppBar />
 
-      <Grid container spacing={2} py={2}>
-        <Grid item container>
-          <Grid item xs>
-            <Typography variant="h5">Categories</Typography>
+      <Container maxWidth="md">
+        <Grid container spacing={2} py={2}>
+          <Grid item container>
+            <Grid item xs>
+              <Typography variant="h5">Categories</Typography>
+            </Grid>
+
+            <Grid>
+              <Button variant="contained" onClick={handleOnNewCategoryClick}>New</Button>
+            </Grid>
           </Grid>
 
-          <Grid>
-            <Button variant="contained" onClick={handleOnNewCategoryClick}>New</Button>
+          <Grid item xs={12}>
+            <CategoriesTable />
+          </Grid>
+
+
+          <Grid item container>
+            <Grid item xs>
+              <Typography variant="h5">Topics</Typography>
+            </Grid>
+
+            <Grid>
+              <Button variant="contained" onClick={handleOnNewTopicClick}>New</Button>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <TopicsTable />
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <CategoriesTable />
-        </Grid>
-
-
-        <Grid item container>
-          <Grid item xs>
-            <Typography variant="h5">Topics</Typography>
-          </Grid>
-
-          <Grid>
-            <Button variant="contained" onClick={handleOnNewTopicClick}>New</Button>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TopicsTable />
-        </Grid>
-
-      </Grid>
+      </Container>
 
       <CategoryFormDialog open={categoryFormOpen} setOpen={setCategoryFormOpen} />
       <TopicFormDialog open={topicFormOpen} setOpen={setTopicFormOpen} />
-    </main>
+    </>
   );
 }

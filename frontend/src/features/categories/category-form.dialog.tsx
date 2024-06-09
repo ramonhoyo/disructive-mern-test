@@ -1,16 +1,19 @@
 "use client";
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Alert, Grid } from '@mui/material';
+import { Field, Form, Formik } from 'formik';
+import { CreateCategorySchema } from './form-schemas/create-category.schema';
+import { TextField } from 'formik-mui';
+import MultiContentTypeCheckbox from '@/src/components/formik/multi-content-type-checkbox';
 import { createCategory } from './categories.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 export interface FormDialogProps {
   open: boolean;
@@ -18,13 +21,13 @@ export interface FormDialogProps {
 }
 
 export default function CategoryFormDialog(props: FormDialogProps) {
+  const snackbar = useSnackbar();
   const queryClient = useQueryClient();
   const { open, setOpen } = props;
-  const [name, setName] = useState('');
 
   const mutation = useMutation({
     mutationFn: createCategory,
-    onSuccess(data, variables, context) {
+    onSuccess() {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
   });
@@ -33,61 +36,71 @@ export default function CategoryFormDialog(props: FormDialogProps) {
     setOpen(false);
   };
 
-  React.useEffect(() => {
-    if (mutation.isSuccess) {
-      setName('');
-      setOpen(false);
-    }
-  }, [mutation.isSuccess]);
-
   return (
     <React.Fragment>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            mutation.mutate(name);
-          },
+      <Formik
+        initialValues={{
+          name: '',
+          contentTypes: [],
+        }}
+        validationSchema={CreateCategorySchema}
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          mutation.mutate(values, {
+            onSuccess: () => {
+              snackbar.enqueueSnackbar('Category created', { variant: 'success' });
+              resetForm();
+              handleClose();
+            },
+            onSettled: () => {
+              setSubmitting(false);
+            },
+          });
         }}
       >
-        <DialogTitle>Create a new Category</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Categories can help identify some posts based on its category,
-            e.g. images, txt files, youtube video urls, etc.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            label="Category name"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+        {({ submitForm, isSubmitting }) => (
+          <Form>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+            >
 
-          {mutation.error && (
-            <Alert color='error'>{mutation.error.message}</Alert>
-          )}
+              <DialogTitle>Create a new Category</DialogTitle>
+              <DialogContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <DialogContentText>
+                      Categories can help identify some posts based on its category,
+                      e.g. images, txt files, youtube video urls, etc.
+                    </DialogContentText>
+                  </Grid>
 
-          {(mutation.status == 'pending') && (
-            <Box sx={{ my: 1, textAlign: 'center', width: '100%' }}>
-              <CircularProgress />
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} disabled={mutation.isPending}>Cancel</Button>
-          <Button type="submit" disabled={mutation.isPending}>Create</Button>
-        </DialogActions>
-      </Dialog>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      autoFocus
+                      fullWidth
+                      name="name"
+                      label="Category name"
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <MultiContentTypeCheckbox name="contentTypes" />
+                  </Grid>
+                </Grid>
+
+                {mutation.error && (
+                  <Alert color='error'>{mutation.error.message}</Alert>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} disabled={isSubmitting}>Cancel</Button>
+                <Button onClick={submitForm} disabled={isSubmitting}>Create</Button>
+              </DialogActions>
+            </Dialog>
+          </Form>
+        )}
+      </Formik>
     </React.Fragment>
   );
 }
