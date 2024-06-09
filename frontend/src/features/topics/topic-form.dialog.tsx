@@ -1,16 +1,21 @@
 "use client";
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { Alert, Box, CircularProgress, Grid, MenuItem } from '@mui/material';
 import { createTopic } from './topics.api';
+import { Field, Form, Formik } from 'formik';
+import { Select, TextField } from 'formik-mui';
+import useCategories from '../categories/hooks/use-categories';
+import ImageInput from '@/src/components/formik/image-input';
+import { CreateTopicSchema } from './form-schemas/create-topic.schema';
+import { useSnackbar } from 'notistack';
+import { TOPICS_QUERY_KEY } from './use-topics';
 
 export interface FormDialogProps {
   open: boolean;
@@ -18,104 +23,105 @@ export interface FormDialogProps {
 }
 
 export default function CategoryFormDialog(props: FormDialogProps) {
-  const queryClient = useQueryClient();
   const { open, setOpen } = props;
-  const [name, setName] = useState('');
-  const [cover, setCover] = useState<any>('');
 
+  const snackbar = useSnackbar();
+  const queryClient = useQueryClient();
+  const { data: categories } = useCategories();
   const mutation = useMutation({
     mutationFn: createTopic,
-    onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-    },
   });
 
   const handleClose = () => {
     setOpen(false);
-    setCover('');
-  };
-
-  const handleOnFileChange = (e: any) => {
-    console.log(e.target.files);
-    let file = null;
-    if (e.target.files[0]) {
-      file = e.target.files[0];
-    }
-    setCover(file);
   };
 
   React.useEffect(() => {
     if (mutation.isSuccess) {
-      setName('');
       setOpen(false);
     }
   }, [mutation.isSuccess]);
 
   return (
-    <React.Fragment>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            mutation.mutate({
-              title: name,
-              cover,
-            });
+    <Formik
+      initialValues={{
+        title: '',
+        cover: null,
+        categoryId: ''
+      }}
+      validationSchema={CreateTopicSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        mutation.mutate(values, {
+          onSuccess() {
+            snackbar.enqueueSnackbar('Topic created', { variant: 'success' })
+            queryClient.invalidateQueries({ queryKey: [TOPICS_QUERY_KEY] });
           },
-        }}
-      >
-        <DialogTitle>Create a new Topic</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Topics can help identify some posts based on its topic,
-            e.g. sports, music, news, etc.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            label="Topic title"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+          onSettled: () => setSubmitting(false),
+        });
+      }}
+    >
+      {({ submitForm, isSubmitting, values }) => (
+        <Form>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+          >
+            <DialogTitle>Create a new Topic</DialogTitle>
+            <DialogContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <DialogContentText>
 
-          <TextField
-            required
-            margin="dense"
-            id="cover"
-            name="cover"
-            label="Cover"
-            onChange={handleOnFileChange}
-            type="file"
-            fullWidth variant="standard"
-            inputProps={{ accept: 'image/png, image/jpeg' }}
-          />
+                    {JSON.stringify(values.cover)}
+                    Topics can help identify some posts based on its topic,
+                    e.g. sports, music, news, etc.
+                  </DialogContentText>
+                </Grid>
 
+                <Grid item xs={12}>
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    name="title"
+                    label="Title"
+                  />
+                </Grid>
 
-          {mutation.error && (
-            <Alert color='error'>{mutation.error.message}</Alert>
-          )}
+                <Grid item xs={12} display='flex'>
+                  <Field
+                    component={Select}
+                    formControl={{ sx: { flex: 1 } }}
+                    id="categoryId"
+                    name="categoryId"
+                    labelId="category-select"
+                    label="category"
+                  >
+                    {categories?.map((category) => (
+                      <MenuItem value={category.id}>{category.name}</MenuItem>
+                    ))}
+                  </Field>
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    component={ImageInput}
+                    name="cover"
+                    label="Cover"
+                  />
+                </Grid>
+              </Grid>
 
-          {(mutation.status == 'pending') && (
-            <Box sx={{ my: 1, textAlign: 'center', width: '100%' }}>
-              <CircularProgress />
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} disabled={mutation.isPending}>Cancel</Button>
-          <Button type="submit" disabled={mutation.isPending}>Create</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+              {mutation.error && (
+                <Alert color='error'>{mutation.error.message}</Alert>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} disabled={isSubmitting}>Cancel</Button>
+              <Button onClick={submitForm} disabled={isSubmitting}>Create</Button>
+            </DialogActions>
+          </Dialog>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
