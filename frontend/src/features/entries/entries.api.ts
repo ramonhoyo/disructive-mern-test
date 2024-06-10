@@ -10,8 +10,12 @@ export interface CreateEntryDto {
   urls: string[];
 }
 
-export async function getEntries(): Promise<Entry[]> {
-  const { data } = await axiosInstance.get('/entries');
+export async function getEntries(title?: string): Promise<Entry[]> {
+  const params = {};
+  if (title) {
+    params.title = title;
+  }
+  const { data } = await axiosInstance.get('/entries', { params });
   return data;
 }
 

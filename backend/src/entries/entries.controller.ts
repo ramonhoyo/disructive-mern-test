@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Request, StreamableFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Query, Request, StreamableFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { TopicsService } from 'src/topics/topics.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
@@ -13,6 +13,7 @@ import * as fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createReadStream } from 'fs';
 import { Public } from 'src/auth/public.decorator';
+import { GetEntriesQueryDto } from './dto/get-entries-query.dto';
 
 const AllowedMimeTypes = [
   'image/png',
@@ -50,8 +51,12 @@ export class EntriesController {
   }
 
   @Get()
-  findAll() {
-    return this.entriesService.findAll();
+  findAll(@Query() query: GetEntriesQueryDto) {
+    let filter = {};
+    if (query.title) {
+      filter = { title: new RegExp(query.title, 'i') };
+    }
+    return this.entriesService.findAll(filter);
   }
 
   @Get('mine')
