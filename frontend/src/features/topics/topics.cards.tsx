@@ -1,4 +1,4 @@
-import { Grid, Typography, Card } from "@mui/material";
+import { Grid, Typography, Card, CardHeader, CardMedia } from "@mui/material";
 import Image from "next/image";
 import useTopics from "./use-topics";
 
@@ -10,14 +10,11 @@ export default function TopicsCards() {
   return (
     <Grid container spacing={2}>
       {topics?.map(it => (
-        <Grid component={Card} sx={{ m: 1 }} item xs={12} sm={3} md={4}>
-          <Image
-            width={200}
-            height={100}
-            src={`${baseUrl}/${it.img}`}
-            alt={it.title}
-          />
-          <Typography>{it.title}</Typography>
+        <Grid item xs={12} sm={3} md={4}>
+          <Card>
+            <CardHeader title={it.title} />
+            <CardMedia component='img' height={100} width='100%' src={`${baseUrl}/${it.img}`} />
+          </Card>
         </Grid>
       ))}
     </Grid>

@@ -5,11 +5,10 @@ import EntryCard from "./entry.card";
 export default function EntriesSection() {
   const { data: entries } = useEntries();
 
-
   return (
-    <Grid container spacing={4}>
+    <Grid sx={{ mt: 4 }} container spacing={4}>
       <Grid item xs={12}>
-        <Typography>Hi</Typography>
+        <Typography variant="h3">Posts</Typography>
       </Grid>
 
       {entries?.map(it => (
