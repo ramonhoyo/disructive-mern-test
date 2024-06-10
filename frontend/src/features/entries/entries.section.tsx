@@ -4,12 +4,14 @@ import EntryCard from "./entry.card";
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from 'use-debounce';
 import { useState } from "react";
+import MultiTopicCheckbox from "./multi-topic-checkbox";
 
 export default function EntriesSection() {
   const [title, setTitle] = useState('');
   const [value] = useDebounce(title, 1000);
+  const [topicFilers, setTopicFilters] = useState<string[]>([]);
 
-  const { data: entries } = useEntries({ title: value });
+  const { data: entries } = useEntries({ title: value, topics: topicFilers });
 
   return (
     <Grid sx={{ mt: 4 }} container spacing={4}>
@@ -24,6 +26,14 @@ export default function EntriesSection() {
             InputProps={{
               endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
             }}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <MultiTopicCheckbox
+            value={topicFilers}
+            setValue={setTopicFilters}
+            name="filter"
           />
         </Grid>
       </Grid>
