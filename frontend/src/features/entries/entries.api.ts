@@ -54,3 +54,8 @@ export async function getEntryImage(url: string): Promise<string> {
   const { data } = await axiosInstance.get(url, { responseType: 'arraybuffer' });
   return Buffer.from(data).toString('base64');
 }
+
+export async function getEntryFile(url: string) {
+  const { data } = await axiosInstance.get(url, { responseType: 'arraybuffer' });
+  return data;
+}

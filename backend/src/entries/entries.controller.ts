@@ -110,6 +110,8 @@ export class EntriesController {
         uuid: uuidv4(),
         url,
         type: ContentType.Video,
+        originalName: '',
+        fileSize: 0,
       });
     });
 
@@ -132,6 +134,8 @@ export class EntriesController {
         type: this.mapMimetypeToContentType(file.mimetype),
         url: `${this.hostname}/entries/files/${uuid}`,
         path: file.path,
+        originalName: file.originalname,
+        fileSize: file.size,
       });
     }
 

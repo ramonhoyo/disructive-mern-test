@@ -21,6 +21,11 @@ export class EntryMedia {
 
   @Prop({ required: false })
   path?: string;
+
+  @Prop()
+  originalName: string;
+
+  fileSize: number;
 }
 
 export const EntryMediaSchema = SchemaFactory.createForClass(EntryMedia);
