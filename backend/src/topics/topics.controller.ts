@@ -17,8 +17,11 @@ import { createReadStream, existsSync, renameSync } from 'fs';
 import { join } from 'path';
 import { Public } from 'src/auth/public.decorator';
 import { CategoriesService } from 'src/categories/categories.service';
+import { ApiTags } from '@nestjs/swagger';
+import { Topic } from './schema/topic.schema';
 
 @Controller('topics')
+@ApiTags('topics')
 @UseGuards(RolesGuard)
 export class TopicsController {
   baseCoverPath: string;
@@ -31,7 +34,7 @@ export class TopicsController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Topic[]> {
     return this.topicsService.findAll();
   }
 

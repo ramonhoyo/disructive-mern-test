@@ -14,6 +14,9 @@ import { existsSync } from 'node:fs';
 import { createReadStream } from 'fs';
 import { Public } from 'src/auth/public.decorator';
 import { GetEntriesQueryDto } from './dto/get-entries-query.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { Entry } from './schema/entry.schema';
+import { EntryStatDto } from './dto/get-entries-stats.dto';
 
 const AllowedMimeTypes = [
   'image/png',
@@ -22,6 +25,7 @@ const AllowedMimeTypes = [
 ];
 
 @Controller('entries')
+@ApiTags('entries')
 export class EntriesController {
   baseUrl = '';
   maxEntryFileSize = 0;
@@ -51,7 +55,7 @@ export class EntriesController {
   }
 
   @Get()
-  findAll(@Request() req, @Query() query: GetEntriesQueryDto) {
+  findAll(@Request() req, @Query() query: GetEntriesQueryDto): Promise<Entry[]> {
     if (req.user.type === UserTypes.Creator) {
       return this.findAllPublic(query);
     }
@@ -70,7 +74,7 @@ export class EntriesController {
 
   @Public()
   @Get('/public')
-  async findAllPublic(@Query() query: GetEntriesQueryDto) {
+  async findAllPublic(@Query() query: GetEntriesQueryDto): Promise<Entry[]> {
     let filter = {};
     if (query.title) {
       filter = { title: new RegExp(query.title, 'i') };
@@ -86,12 +90,12 @@ export class EntriesController {
         createdBy: {
           username: 'Protected info',
         },
-      };
+      } as Entry;
     });
   }
 
   @Get('mine')
-  async getMyEntries(@Request() req: any) {
+  async getMyEntries(@Request() req: any): Promise<Entry[]> {
     const result = await this.entriesService.findAll({
       createdBy: req.user._id,
     });
@@ -100,7 +104,7 @@ export class EntriesController {
   }
 
   @Get(':id')
-  async findEntryById(@Request() req, @Param('id') id: string) {
+  async findEntryById(@Request() req, @Param('id') id: string): Promise<Entry> {
     const result = await this.entriesService.findOne(id);
     if (!result) {
       throw new NotFoundException('Entry not found');
@@ -119,7 +123,7 @@ export class EntriesController {
         createdBy: {
           username: 'Protected info',
         },
-      }
+      } as Entry;
     };
 
     return result;
@@ -160,7 +164,7 @@ export class EntriesController {
     @Request() req: any,
     @Body() body: CreateEntryDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ) {
+  ): Promise<Entry> {
     const topic = await this.topicsService.findById(body.topicId);
     if (!topic) {
       throw new NotFoundException('Topic not found');
@@ -227,7 +231,7 @@ export class EntriesController {
 
   @Public()
   @Get('stats/count')
-  async getEntriesCountByTopic() {
+  async getEntriesCountByTopic(): Promise<EntryStatDto[]> {
     return this.entriesService.getEntriesCountByTopic();
   }
 }
