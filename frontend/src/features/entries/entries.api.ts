@@ -66,3 +66,9 @@ export async function getEntryFile(url: string) {
   const { data } = await axiosInstance.get(url, { responseType: 'arraybuffer' });
   return data;
 }
+
+
+export async function getEntriesStats() {
+  const { data } = await axiosInstance.get('/entries/stats/count');
+  return data;
+}
