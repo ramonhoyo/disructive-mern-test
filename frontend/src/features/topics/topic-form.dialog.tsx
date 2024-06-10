@@ -50,11 +50,13 @@ export default function CategoryFormDialog(props: FormDialogProps) {
         categoryId: ''
       }}
       validationSchema={CreateTopicSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         mutation.mutate(values, {
           onSuccess() {
             snackbar.enqueueSnackbar('Topic created', { variant: 'success' })
             queryClient.invalidateQueries({ queryKey: [TOPICS_QUERY_KEY] });
+            resetForm();
+            handleClose();
           },
           onSettled: () => setSubmitting(false),
         });

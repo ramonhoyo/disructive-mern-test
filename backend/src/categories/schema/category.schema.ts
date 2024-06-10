@@ -18,7 +18,6 @@ export class Category {
   @Prop({ unique: true, required: true })
   name: string;
 
-
   @Prop({ type: [String], enum: ContentType, required: true })
   contentTypes: ContentType[];
 
