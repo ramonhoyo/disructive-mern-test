@@ -41,21 +41,23 @@ export class EntriesService {
   }
 
   findAll(filter?: FilterQuery<Entry>) {
-    return this.entryModel.find(filter, null, { sort: { createdAt: -1 } });
+    return this.entryModel
+      .find(filter, null, { sort: { createdAt: -1 } })
+      .populate('createdBy');
   }
 
   findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid id');
     }
-    return this.entryModel.findById(id);
+    return this.entryModel.findById(id).populate('createdBy');
   }
 
   update(id: string, body: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'>) {
-    return this.entryModel.findByIdAndUpdate(id, body, { new: true });
+    return this.entryModel.findByIdAndUpdate(id, body, { new: true }).populate('createdBy');
   }
 
   findOneByMediaUuid(uuid: string) {
-    return this.entryModel.findOne({ 'media.uuid': uuid });
+    return this.entryModel.findOne({ 'media.uuid': uuid }).populate('createdBy');
   }
 }

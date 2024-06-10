@@ -15,4 +15,7 @@ export interface Entry {
   content: string;
   createdAt: string;
   updatedAt: string;
+  createdBy: {
+    username: string;
+  }
 }

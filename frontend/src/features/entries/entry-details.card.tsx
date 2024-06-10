@@ -10,7 +10,7 @@ export interface EntryCardProps {
   entry: Entry;
 }
 
-export default function EntryCard(props: EntryCardProps) {
+export default function EntryDetailsCard(props: EntryCardProps) {
   const { entry } = props;
   const image = entry.media.find(it => it.type === ContentType.Image);
   const video = entry.media.find(it => it.type === ContentType.Video);
@@ -21,7 +21,7 @@ export default function EntryCard(props: EntryCardProps) {
     <Card>
       <CardHeader
         title={entry.title}
-        subheader={format(entry.createdAt, 'dd/mm/yyyy')}
+        subheader={`${entry.createdBy.username} ${format(entry.createdAt, 'dd/mm/yyyy')}`}
       />
 
       {img && (
@@ -32,13 +32,14 @@ export default function EntryCard(props: EntryCardProps) {
         <CardMedia component="img" height={198} alt="img" src={getYoutubeThumbnail(video.url)} />
       )}
 
-
       <CardContent>
         <Typography variant="body2">{entry.content}</Typography>
+
+
+
       </CardContent>
 
       <CardActions>
-        <Button LinkComponent={Link} href={`/entries/${entry.id}`} size="small">Read More</Button>
       </CardActions>
     </Card>
   );
