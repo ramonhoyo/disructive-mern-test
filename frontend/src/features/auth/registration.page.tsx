@@ -3,10 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { registerUser } from './auth.api';
 import { updateToken } from '@/src/helpers/axios-instance';
-import { redirect } from 'next/navigation';
 import { Button, Card, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function RegistrationPage() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<'Reader' | 'Creator' | ''>('');
@@ -30,7 +31,7 @@ export default function RegistrationPage() {
     if (registerUserMutation.data) {
       updateToken(registerUserMutation.data.token);
       queryClient.setQueryData(['user/me'], registerUserMutation.data.user);
-      redirect('/');
+      router.replace('/');
     }
   }, [registerUserMutation.data]);
 

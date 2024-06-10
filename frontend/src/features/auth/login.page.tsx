@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { login } from './auth.api';
 import { updateToken } from '@/src/helpers/axios-instance';
 import { redirect } from 'next/navigation';
-import { Button, Card, Container, Grid, TextField, Typography, Link as MuiLink } from '@mui/material';
+import { Button, Card, Container, Grid, TextField, Typography, Link as MuiLink, Alert } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -49,12 +49,21 @@ export default function LoginPage() {
                 label='Username or Email'
                 value={username}
                 onChange={e => setUsername(e.target.value)}
+                disabled={loginMutation.isPending}
+                required
               />
             </Grid>
 
             <Grid item xs>
-              <Button fullWidth type="submit" variant='contained'>Login</Button>
+              <Button fullWidth type="submit" disabled={loginMutation.isPending} variant='contained'>Login</Button>
             </Grid>
+
+            {loginMutation.error && (
+              <Grid item xs={12}>
+                <Alert severity='error'>{loginMutation.error?.message}</Alert>
+              </Grid>
+            )}
+
 
             <Grid item xs={12}>
               <Typography>Do not have an account? <MuiLink component={Link} href="register">Join us!</MuiLink></Typography>
