@@ -56,6 +56,10 @@ export class EntriesController {
     if (query.title) {
       filter = { title: new RegExp(query.title, 'i') };
     }
+    if (query.topics) {
+      filter = { ...filter, topic: { $in: query.topics } };
+    }
+    Logger.log(query);
     return this.entriesService.findAll(filter);
   }
 
