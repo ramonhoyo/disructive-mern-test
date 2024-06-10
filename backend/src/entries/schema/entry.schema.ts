@@ -20,7 +20,7 @@ import { EntryMedia, EntryMediaSchema } from "./entry-media.schema";
 export class Entry {
   id: string;
 
-  @Prop({ unique: true })
+  @Prop({})
   title: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Topic" })
@@ -49,3 +49,7 @@ export class Entry {
 
 export const EntrySchema = SchemaFactory.createForClass(Entry);
 export type EntryDocument = mongoose.Document & Entry;
+
+EntrySchema.index({ title: 1, 'createdBy.username': 1 });
+
+

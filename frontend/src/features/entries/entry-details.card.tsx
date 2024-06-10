@@ -29,15 +29,12 @@ export default function EntryDetailsCard(props: EntryCardProps) {
         subheader={`${entry.createdBy.username} ${format(entry.createdAt, 'dd/mm/yyyy')}`}
       />
 
-      <Box sx={{ px: 2 }}>
-        {images.length > 0 && (<Chip size="small" color="primary" label={`(${images.length}) Images`} />)}
-        {videos.length > 0 && (<Chip size="small" color="info" label={`(${videos.length}) Videos`} />)}
-        {txts.length > 0 && (<Chip size="small" color="success" label={`(${txts.length}) Txt files`} />)}
-      </Box>
-
       <CardContent>
-
-
+        <Box sx={{ px: 2 }}>
+          {images.length > 0 && (<Chip size="small" color="primary" label={`(${images.length}) Images`} />)}
+          {videos.length > 0 && (<Chip size="small" color="info" label={`(${videos.length}) Videos`} />)}
+          {txts.length > 0 && (<Chip size="small" color="success" label={`(${txts.length}) Txt files`} />)}
+        </Box>
 
 
         <Typography variant="body2">{entry.content}</Typography>
@@ -45,21 +42,20 @@ export default function EntryDetailsCard(props: EntryCardProps) {
         {images.length > 0 && (
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Images ({images.length} items)</Typography>
-            <Carousel autoPlay sx={{ mt: 4 }}>
+            <Carousel autoPlay={false} navButtonsAlwaysVisible sx={{ mt: 4 }}>
               {images.map((image) => (
                 <Paper sx={{ flex: 1, m: 2 }}>
-                  <EntryImage sx={{ width: '100%' }} url={image.url} />
+                  <EntryImage style={{ width: '100%' }} url={image.url} />
                 </Paper>
               ))}
             </Carousel>
           </Box>
         )}
 
-
         {videos.length > 0 && (
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Videos ({videos.length} urls)</Typography>
-            <Carousel autoPlay navButtonsAlwaysVisible sx={{ mt: 4 }}>
+            <Carousel height={400} autoPlay={false} navButtonsAlwaysVisible sx={{ mt: 4 }}>
               {videos.map((it) => (
                 <Paper sx={{ flex: 1, m: 2, justifyContent: 'center' }}>
                   <iframe
@@ -76,22 +72,17 @@ export default function EntryDetailsCard(props: EntryCardProps) {
         )}
 
         {txts.length > 0 && (
-          <Box sx={{ mt: 4 }}>
+          <>
             <Typography variant="h6">Texts ({txts.length} items)</Typography>
-            <Carousel autoPlay={false} navButtonsAlwaysVisible sx={{ mt: 4 }}>
+            <Carousel sx={{ mt: 4, overflow: 'scroll' }}>
               {txts.map((txt) => (
-                <Paper sx={{ flex: 1, mx: 8, mt: 2, p: 2 }}>
-                  <EntryTxt sx={{ flex: 1, px: 8 }} url={txt.url} />
-                </Paper>
+                <EntryTxt url={txt.url} />
               ))}
             </Carousel>
-          </Box>
+          </>
         )}
 
       </CardContent>
-
-      <CardActions>
-      </CardActions>
     </Card>
   );
 }

@@ -100,7 +100,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            MERN Test, your ara {user.type}
+            MERN Test {user?.type}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -156,7 +156,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            MERN Test, your ara {user.type}
+            MERN Test {user?.type}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

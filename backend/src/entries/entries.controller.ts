@@ -53,7 +53,7 @@ export class EntriesController {
   @Get()
   findAll(@Request() req, @Query() query: GetEntriesQueryDto) {
     if (req.user.type === UserTypes.Creator) {
-      req.redirect('/entries/public/');
+      return this.findAllPublic(query);
     }
 
     let filter = {};
@@ -84,7 +84,7 @@ export class EntriesController {
         ...it.toJSON(),
         media: [],
         createdBy: {
-          username: 'Sigin in to see the author',
+          username: 'Protected info',
         },
       };
     });
@@ -100,16 +100,44 @@ export class EntriesController {
   }
 
   @Get(':id')
-  findEntryById(@Param('id') id: string) {
-    return this.entriesService.findOne(id);
+  async findEntryById(@Request() req, @Param('id') id: string) {
+    const result = await this.entriesService.findOne(id);
+    if (!result) {
+      throw new NotFoundException('Entry not found');
+    }
+
+    if (
+      req.user.type === UserTypes.Creator &&
+      // @ts-ignore
+      result.createdBy._id.toString() !== req.user.id
+    ) {
+      // @ts-ignore
+      Logger.log('Invalid user type', req.user.id, result.createdBy._id.toString());
+      return {
+        ...result.toJSON(),
+        media: [],
+        createdBy: {
+          username: 'Protected info',
+        },
+      }
+    };
+
+    return result;
   }
 
-  @Public()
   @Get('files/:uuid')
   async getFileEntry(@Request() req: any, @Param('uuid') uuid: string): Promise<StreamableFile> {
     const entry = await this.entriesService.findOneByMediaUuid(uuid);
     if (!entry) {
       throw new NotFoundException('Entry not found');
+    }
+
+    if (
+      req.user.type === UserTypes.Creator &&
+      // @ts-ignore
+      entry.createdBy._id.toString() !== req.user.id
+    ) {
+      throw new BadRequestException('Invalid user type');
     }
 
     const media = entry.media.find(it => it.uuid === uuid);
