@@ -54,4 +54,8 @@ export class EntriesService {
   update(id: string, body: Omit<Entry, 'id' | 'createdAt' | 'updatedAt'>) {
     return this.entryModel.findByIdAndUpdate(id, body, { new: true });
   }
+
+  findOneByMediaUuid(uuid: string) {
+    return this.entryModel.findOne({ 'media.uuid': uuid });
+  }
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Request, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Request, StreamableFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { TopicsService } from 'src/topics/topics.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
@@ -11,6 +11,8 @@ import { ContentType } from './entries.types';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { createReadStream } from 'fs';
+import { Public } from 'src/auth/public.decorator';
 
 const AllowedMimeTypes = [
   'image/png',
@@ -66,6 +68,27 @@ export class EntriesController {
     return this.entriesService.findOne(id);
   }
 
+  @Public()
+  @Get('files/:uuid')
+  async getFileEntry(@Request() req: any, @Param('uuid') uuid: string): Promise<StreamableFile> {
+    const entry = await this.entriesService.findOneByMediaUuid(uuid);
+    if (!entry) {
+      throw new NotFoundException('Entry not found');
+    }
+
+    const media = entry.media.find(it => it.uuid === uuid);
+    if (!media) {
+      throw new NotFoundException('Media not found');
+    }
+
+    if (media.type === ContentType.Video) {
+      throw new BadRequestException('Invalid media type');
+    }
+
+    const readStream = createReadStream(media.path);
+    return new StreamableFile(readStream);
+  }
+
   @Roles(UserTypes.Creator)
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
@@ -90,8 +113,6 @@ export class EntriesController {
       });
     });
 
-
-    Logger.log(files);
     for (let i = 0; i < files?.length; i++) {
       const file = files[i];
       if (file.size > this.maxEntryFileSize) {
@@ -109,7 +130,7 @@ export class EntriesController {
       media.push({
         uuid,
         type: this.mapMimetypeToContentType(file.mimetype),
-        url: `${this.hostname}/entry_files/${uuid}`,
+        url: `${this.hostname}/entries/files/${uuid}`,
         path: file.path,
       });
     }

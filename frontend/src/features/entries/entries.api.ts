@@ -48,3 +48,9 @@ export async function createEntry(entry: CreateEntryDto) {
   const { data } = await axiosInstance.post('/entries', formData);
   return data;
 }
+
+
+export async function getEntryImage(url: string): Promise<string> {
+  const { data } = await axiosInstance.get(url, { responseType: 'arraybuffer' });
+  return Buffer.from(data).toString('base64');
+}

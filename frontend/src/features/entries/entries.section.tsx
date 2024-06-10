@@ -1,7 +1,6 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import useEntries from "./hooks/use-entries";
-import { format } from 'date-fns';
-import Link from "next/link";
+import EntryCard from "./entry.card";
 
 export default function EntriesSection() {
   const { data: entries } = useEntries();
@@ -15,20 +14,7 @@ export default function EntriesSection() {
 
       {entries?.map(it => (
         <Grid item xs={12} md={4} xl={3}>
-          <Card>
-            <CardHeader
-              title={it.title}
-              subheader={format(it.createdAt, 'dd/mm/yyyy')}
-            />
-
-            <CardContent>
-              <Typography variant="body2">{it.content}</Typography>
-            </CardContent>
-
-            <CardActions>
-              <Button LinkComponent={Link} href={`/entries/${it.id}`} size="small">Read More</Button>
-            </CardActions>
-          </Card>
+          <EntryCard entry={it} />
         </Grid>
       ))}
     </Grid>
