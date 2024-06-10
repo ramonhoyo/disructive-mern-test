@@ -169,4 +169,9 @@ export class EntriesController {
       createdBy: req.user,
     });
   }
+
+  @Get('stats/count')
+  async getEntriesCountByTopic() {
+    return this.entriesService.getEntriesCountByTopic();
+  }
 }

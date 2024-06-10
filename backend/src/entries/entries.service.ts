@@ -60,4 +60,23 @@ export class EntriesService {
   findOneByMediaUuid(uuid: string) {
     return this.entryModel.findOne({ 'media.uuid': uuid }).populate('createdBy');
   }
+
+  async getEntriesCountByTopic() {
+    const result = await this.entryModel.aggregate([
+      {
+        $group: {
+          _id: '$topic',
+          entriesCount: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          topicId: '$_id',
+          entriesCount: 1,
+          _id: 0
+        }
+      }
+    ]);
+    return result;
+  }
 }
