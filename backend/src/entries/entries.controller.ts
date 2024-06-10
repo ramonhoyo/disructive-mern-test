@@ -51,7 +51,11 @@ export class EntriesController {
   }
 
   @Get()
-  findAll(@Query() query: GetEntriesQueryDto) {
+  findAll(@Request() req, @Query() query: GetEntriesQueryDto) {
+    if (req.user.type === UserTypes.Creator) {
+      req.redirect('/entries/public/');
+    }
+
     let filter = {};
     if (query.title) {
       filter = { title: new RegExp(query.title, 'i') };
@@ -61,6 +65,29 @@ export class EntriesController {
     }
     Logger.log(query);
     return this.entriesService.findAll(filter);
+  }
+
+
+  @Public()
+  @Get('/public')
+  async findAllPublic(@Query() query: GetEntriesQueryDto) {
+    let filter = {};
+    if (query.title) {
+      filter = { title: new RegExp(query.title, 'i') };
+    }
+    if (query.topics) {
+      filter = { ...filter, topic: { $in: query.topics } };
+    }
+    const result = await this.entriesService.findAll(filter);
+    return result.map(it => {
+      return {
+        ...it.toJSON(),
+        media: [],
+        createdBy: {
+          username: 'Sigin in to see the author',
+        },
+      };
+    });
   }
 
   @Get('mine')
@@ -170,6 +197,7 @@ export class EntriesController {
     });
   }
 
+  @Public()
   @Get('stats/count')
   async getEntriesCountByTopic() {
     return this.entriesService.getEntriesCountByTopic();
