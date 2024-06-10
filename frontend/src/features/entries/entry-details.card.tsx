@@ -1,10 +1,8 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardActions, CardContent, CardHeader, Chip, Typography } from "@mui/material";
 import { Entry } from "./entries.interfaces";
 import { format } from "date-fns";
-import Link from "next/link";
 import { ContentType } from "../categories/categories.interfaces";
-import useEntryImage from "./hooks/use-entry-image";
-import { getEmbeedYoutubeUrl, getYoutubeThumbnail } from "@/src/helpers/utils";
+import { getEmbeedYoutubeUrl } from "@/src/helpers/utils";
 import EntryImage from "./entry-image";
 
 import Carousel from 'react-material-ui-carousel'
@@ -17,14 +15,12 @@ export interface EntryCardProps {
 
 export default function EntryDetailsCard(props: EntryCardProps) {
   const { entry } = props;
-  const video = entry.media.find(it => it.type === ContentType.Video);
 
   const images = entry.media.filter(it => it.type === ContentType.Image);
   const videos = entry.media.filter(it => it.type === ContentType.Video);
   const txts = entry.media.filter(it => it.type === ContentType.Txt);
   const image = images && images[0];
 
-  const { data: img } = useEntryImage(image?.url);
 
   return (
     <Card>
@@ -33,7 +29,17 @@ export default function EntryDetailsCard(props: EntryCardProps) {
         subheader={`${entry.createdBy.username} ${format(entry.createdAt, 'dd/mm/yyyy')}`}
       />
 
+      <Box sx={{ px: 2 }}>
+        {images.length > 0 && (<Chip size="small" color="primary" label={`(${images.length}) Images`} />)}
+        {videos.length > 0 && (<Chip size="small" color="info" label={`(${videos.length}) Videos`} />)}
+        {txts.length > 0 && (<Chip size="small" color="success" label={`(${txts.length}) Txt files`} />)}
+      </Box>
+
       <CardContent>
+
+
+
+
         <Typography variant="body2">{entry.content}</Typography>
 
         {images.length > 0 && (
