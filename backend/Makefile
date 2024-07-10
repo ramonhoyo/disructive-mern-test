@@ -1,7 +1,7 @@
 .PHONY: make 
 make: 
-	docker build -t disrutive-mern-backend .
+	docker build -t disrutive .
 
 .PHONY: run
 run:
-	docker run -p 5000:3000 disrutive-mern-backend
+	docker run -p 5000:3000 disrutive
