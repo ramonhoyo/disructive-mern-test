@@ -1,3 +1,4 @@
+"use client";
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import useEntries from "./hooks/use-entries";
 import EntryCard from "./entry.card";
@@ -39,7 +40,7 @@ export default function EntriesSection() {
       </Grid>
 
       {entries?.map(it => (
-        <Grid item xs={12} md={4} xl={3}>
+        <Grid key={it.id} item xs={12} md={4} xl={3}>
           <EntryCard entry={it} />
         </Grid>
       ))}

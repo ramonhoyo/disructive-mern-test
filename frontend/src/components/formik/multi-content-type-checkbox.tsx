@@ -46,6 +46,7 @@ export default function MultiContentTypeCheckbox(props: MultiContentTypeCheckbox
       <FormGroup>
         {Object.entries(state).map(([key, checked]) => (
           <FormControlLabel
+            key={key}
             label={key}
             onBlur={() => helpers.setTouched(true)}
             control={

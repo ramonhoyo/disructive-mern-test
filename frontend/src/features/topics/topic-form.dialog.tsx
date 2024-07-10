@@ -97,7 +97,7 @@ export default function CategoryFormDialog(props: FormDialogProps) {
                     label="category"
                   >
                     {categories?.map((category) => (
-                      <MenuItem value={category.id}>{category.name}</MenuItem>
+                      <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
                     ))}
                   </Field>
                 </Grid>

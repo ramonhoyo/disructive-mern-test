@@ -1,3 +1,4 @@
+"use client";
 import MultilineTextField from '@/src/components/multiline-text-field';
 import { Box, Button, Container, Grid, MenuItem, Paper, Typography } from '@mui/material';
 import { Field, Form } from 'formik';
@@ -60,7 +61,7 @@ export default function CreateEntryForm({ submitForm, isSubmitting, values, erro
               label="Topic"
             >
               {topics?.map((topic) => (
-                <MenuItem value={topic.id}>{topic.title}</MenuItem>
+                <MenuItem key={topic.id} value={topic.id}>{topic.title}</MenuItem>
               ))}
             </Field>
           </Grid>

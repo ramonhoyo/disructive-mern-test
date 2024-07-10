@@ -1,5 +1,4 @@
 "use client";
-
 import ResponsiveAppBar from "@/src/common/responsive-appbar";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import CategoriesTable from "../categories/categories.table";

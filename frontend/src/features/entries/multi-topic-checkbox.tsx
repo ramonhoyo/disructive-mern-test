@@ -33,6 +33,7 @@ export default function MultiTopicCheckbox(props: MultiTopicCheckboxProps) {
       <FormGroup>
         {topics?.map((topic) => (
           <FormControlLabel
+            key={topic.id}
             label={topic.title}
             control={
               <Checkbox

@@ -16,6 +16,7 @@ const MultiUrlsTextField = (props: any) => {
           <>
             {field.value.map((_: any, index: number) => (
               <Field
+                key={props.name + index}
                 component={TextField}
                 fullWidth
                 name={`${props.name}.${index}`}

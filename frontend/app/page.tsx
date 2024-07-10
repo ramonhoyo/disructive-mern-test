@@ -3,10 +3,8 @@ import HomePage from "@/src/features/home/home.page";
 
 export default function Home() {
   return (
-    <main>
-      <ProtectedRoute>
-        <HomePage />
-      </ProtectedRoute>
-    </main>
+    <ProtectedRoute>
+      <HomePage />
+    </ProtectedRoute>
   );
 }

@@ -22,7 +22,7 @@ export const removeToken = () => {
 }
 
 export const getToken = () => {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
     return null;
   }
 

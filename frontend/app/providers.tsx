@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import ReactQueryProvider from "@/src/helpers/react-query-client-provider";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from "@mui/material/styles";

@@ -1,19 +1,23 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "../users.interfaces";
 import { getMe } from "../users.api";
 import { useEffect } from "react";
 
 export function getUserFromLocalStorage() {
-  const user = localStorage.getItem('user');
+  if (typeof window === 'undefined') return null;
+  const user = window.localStorage.getItem('user');
   return user ? JSON.parse(user) : null;
 }
 
 export function saveUserToLocalStorage(user: User) {
-  localStorage.setItem('user', JSON.stringify(user));
+  if (typeof window === 'undefined') return null;
+  window.localStorage.setItem('user', JSON.stringify(user));
 }
 
 export function removeUserFromLocalStorage() {
-  localStorage.removeItem('user');
+  if (typeof window === 'undefined') return null;
+  window.localStorage.removeItem('user');
 }
 
 export function useUser() {

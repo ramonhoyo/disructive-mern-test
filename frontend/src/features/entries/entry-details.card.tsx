@@ -44,7 +44,7 @@ export default function EntryDetailsCard(props: EntryCardProps) {
             <Typography variant="h6">Images ({images.length} items)</Typography>
             <Carousel autoPlay={false} navButtonsAlwaysVisible sx={{ mt: 4 }}>
               {images.map((image) => (
-                <Paper sx={{ flex: 1, m: 2 }}>
+                <Paper key={image.uuid} sx={{ flex: 1, m: 2 }}>
                   <EntryImage style={{ width: '100%' }} url={image.url} />
                 </Paper>
               ))}
@@ -57,7 +57,7 @@ export default function EntryDetailsCard(props: EntryCardProps) {
             <Typography variant="h6">Videos ({videos.length} urls)</Typography>
             <Carousel height={400} autoPlay={false} navButtonsAlwaysVisible sx={{ mt: 4 }}>
               {videos.map((it) => (
-                <Paper sx={{ flex: 1, m: 2, justifyContent: 'center' }}>
+                <Paper key={it.uuid} sx={{ flex: 1, m: 2, justifyContent: 'center' }}>
                   <iframe
                     width="80%"
                     height="400"
@@ -76,7 +76,7 @@ export default function EntryDetailsCard(props: EntryCardProps) {
             <Typography variant="h6">Texts ({txts.length} items)</Typography>
             <Carousel sx={{ mt: 4, overflow: 'scroll' }}>
               {txts.map((txt) => (
-                <EntryTxt url={txt.url} />
+                <EntryTxt key={txt.uuid} url={txt.url} />
               ))}
             </Carousel>
           </>
