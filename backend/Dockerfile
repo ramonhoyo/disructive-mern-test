@@ -10,13 +10,7 @@ WORKDIR /usr/src/app
 # Install dependencies based on the preferred package manager
 COPY --chown=node:node package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
+RUN NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all;
 
 COPY --chown=node:node . .
 
@@ -40,12 +34,7 @@ RUN npm run build
 
 ENV NODE_ENV production
 
-RUN \
-  if [ -f yarn.lock ]; then NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all; \
-  elif [ -f package-lock.json ]; then npm ci --only=production && npm cache clean --force; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all;
 
 USER node
 
