@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 
 # Install dependencies based on the preferred package manager
-COPY --chown=node:node package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY --chown=node:node yarn.lock* ./
 
 RUN NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all;
 
@@ -24,7 +24,8 @@ FROM node:18-alpine AS build
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+
+COPY --chown=node:node yarn.lock* ./
 
 COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
 
