@@ -6,13 +6,11 @@ FROM node:18-alpine AS development
 
 WORKDIR /usr/src/app
 
-
-# Install dependencies based on the preferred package manager
 COPY --chown=node:node yarn.lock* ./
 
 ENV NODE_ENV=development
 
-RUN yarn --frozen-lockfile && yarn cache clean --all;
+RUN yarn --frozen-lockfile
 
 COPY --chown=node:node . .
 
@@ -29,15 +27,19 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node yarn.lock* ./
 
+RUN ls
+
 COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
 
 COPY --chown=node:node . .
 
+RUN ls
+
+RUN yarn --frozen-lockfile && yarn cache clean --all
+
 RUN npm run build
 
-ENV NODE_ENV production
-
-RUN yarn --frozen-lockfile && yarn cache clean --all;
+ENV NODE_ENV=production
 
 USER node
 
