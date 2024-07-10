@@ -10,7 +10,9 @@ WORKDIR /usr/src/app
 # Install dependencies based on the preferred package manager
 COPY --chown=node:node yarn.lock* ./
 
-RUN NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all;
+ENV NODE_ENV=development
+
+RUN yarn --frozen-lockfile && yarn cache clean --all;
 
 COPY --chown=node:node . .
 
@@ -35,7 +37,7 @@ RUN npm run build
 
 ENV NODE_ENV production
 
-RUN NODE_ENV=production yarn --frozen-lockfile && yarn cache clean --all;
+RUN yarn --frozen-lockfile && yarn cache clean --all;
 
 USER node
 
