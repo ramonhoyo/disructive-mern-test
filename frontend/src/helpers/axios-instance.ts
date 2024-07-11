@@ -3,7 +3,7 @@
 import axios, { AxiosInstance } from "axios"
 
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // Configura la URL base de tu API
+  baseURL: 'https://disruptive-backend.rahoyo.com/', // Configura la URL base de tu API
 })
 
 export const updateToken = (token: string) => {
