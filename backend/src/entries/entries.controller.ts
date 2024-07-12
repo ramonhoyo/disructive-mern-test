@@ -10,8 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ContentType } from './entries.types';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'node:fs/promises';
-import { existsSync } from 'node:fs';
-import { createReadStream } from 'fs';
+import { createReadStream, existsSync } from 'fs';
 import { Public } from 'src/auth/public.decorator';
 import { GetEntriesQueryDto } from './dto/get-entries-query.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -27,6 +26,7 @@ const AllowedMimeTypes = [
 @Controller('entries')
 @ApiTags('entries')
 export class EntriesController {
+  logger = new Logger(EntriesController.name);
   baseUrl = '';
   maxEntryFileSize = 0;
   hostname = '';
@@ -197,6 +197,7 @@ export class EntriesController {
       }
 
       const uuid = uuidv4();
+      this.logger.log(`Hostname: ${this.hostname}`);
       media.push({
         uuid,
         type: this.mapMimetypeToContentType(file.mimetype),
